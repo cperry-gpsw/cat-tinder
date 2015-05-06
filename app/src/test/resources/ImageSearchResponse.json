@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "link": "http://some.com/cat_one.jpg",
+      "snippet": "Cat 1"
+    },
+    {
+      "link": "http://some.com/cat_two.jpg",
+      "snippet": "Cat 2"
+    },
+    {
+      "link": "http://some.com/cat_three.jpg",
+      "snippet": "Cat 3"
+    }
+  ]
+}

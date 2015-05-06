@@ -2,10 +2,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
-        <!-- We are replacing the ActionBar with a ToolBar in code -->
-        <!--<item name="android:windowActionBar">false</item>-->
-        <!--<item name="android:windowNoTitle">true</item>-->
-        <!--<item name="android:windowActionModeOverlay">true</item>-->
     </style>
 
 </resources>
