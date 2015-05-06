@@ -22,7 +22,6 @@ public class ActionbarMatchers {
     return withResourceName(is(resourceName));
   }
 
-
   static Matcher<View> withResourceName(final Matcher<String> resourceNameMatcher) {
     return new TypeSafeMatcher<View>() {
       @Override

@@ -9,6 +9,12 @@ import android.view.ViewGroup;
 
 import com.cperry.cattinder.R;
 
+/**
+ * Key: AIzaSyAZmvW6DecHAvtLCiqYQzmhKCNnsOYxtgo
+ * Search Engine ID: 005351716643766109453:uusxxukdams
+ *
+ * https://www.googleapis.com/customsearch/v1?key=AIzaSyAZmvW6DecHAvtLCiqYQzmhKCNnsOYxtgo&cx=005351716643766109453:uusxxukdams&q=cat&searchType=image
+ */
 public class HotOrNotFragment extends Fragment {
 
   @Nullable @Override public View onCreateView(
