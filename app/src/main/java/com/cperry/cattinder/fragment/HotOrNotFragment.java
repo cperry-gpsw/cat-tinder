@@ -13,21 +13,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cperry.cattinder.R;
+import com.cperry.cattinder.api.CatImageService;
+import com.cperry.cattinder.api.ServiceFactory;
+import com.cperry.cattinder.api.ServiceFactoryImpl;
+import com.cperry.cattinder.data.Cats;
 import com.cperry.cattinder.data.Cats.Cat;
-import com.cperry.cattinder.util.CollectionUtil;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import rx.Subscriber;
+import rx.android.observables.AndroidObservable;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-/**
- * Key: AIzaSyAZmvW6DecHAvtLCiqYQzmhKCNnsOYxtgo
- * Search Engine ID: 005351716643766109453:uusxxukdams
- *
- * https://www.googleapis.com/customsearch/v1?key=AIzaSyAZmvW6DecHAvtLCiqYQzmhKCNnsOYxtgo&cx=005351716643766109453:uusxxukdams&q=cat&searchType=image
- */
 public class HotOrNotFragment extends BaseFragment {
 
   @Nullable @Override public View onCreateView(
@@ -39,22 +39,27 @@ public class HotOrNotFragment extends BaseFragment {
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    List<Cat> cats = CollectionUtil.newList(
-      new Cat(
-        "http://truestorieswithgill.com/wp-content/uploads/2013/09/20130915-190532.jpg",
-        "Grumpy Cat"
-      ),
-      new Cat(
-        "https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-xaf1/v/t1" +
-          ".0-9/304276_294451973899431_1913235174_n.jpg?oh=2b4d96f7f49d45b572902cfd346c78a7&oe=55D6655C&__gda__=1438927245_cf2c5b0a5881ae9029812edef6e4c32b",
-        "Pirate Cat"
-      ),
-      new Cat(
-        "http://static.giantbomb.com/uploads/scale_small/4/45471/1137644-ceiling_cat_900.jpg.png",
-        "Ceiling Cat"
-      )
-    );
+    ServiceFactory serviceFactory = new ServiceFactoryImpl();
+    CatImageService catImageService = serviceFactory.getCatImageService();
 
+    AndroidObservable.bindFragment(this, catImageService.getCats())
+      .subscribeOn(Schedulers.io())
+      .subscribe(new Subscriber<Cats>() {
+        @Override public void onCompleted() {
+
+        }
+
+        @Override public void onError(Throwable e) {
+
+        }
+
+        @Override public void onNext(Cats cats) {
+          setKitties(cats.get());
+        }
+      });
+  }
+
+  private void setKitties(List<Cat> cats) {
     KittyAdapter adapter = new KittyAdapter(
       LayoutInflater.from(getActivity()),
       Picasso.with(getActivity()),
@@ -96,6 +101,10 @@ public class HotOrNotFragment extends BaseFragment {
     });
 
     stackView.setAdapter(adapter);
+
+    // Won't show anything if you don't call this
+    // I think it's an implementation bug in the SwipeFlingAdapterView
+    stackView.requestLayout();
   }
 
   static class KittyAdapter extends BaseAdapter {

@@ -61,6 +61,8 @@
             android:padding="16dp"
             android:text="Cute Kitty"
             android:textSize="22sp"
+            android:singleLine="true"
+            android:ellipsize="end"
             />
 
     </RelativeLayout>
