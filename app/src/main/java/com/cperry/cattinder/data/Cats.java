@@ -1,5 +1,7 @@
 package com.cperry.cattinder.data;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,21 +13,21 @@ public class Cats {
   }
 
   public static class Cat {
-    private String link;
+    private Uri uri;
     private String snippet;
 
     public Cat() {
-      link = "";
+      uri = Uri.EMPTY;
       snippet = "";
     }
 
-    public Cat(String link, String snippet) {
-      this.link = link;
+    public Cat(Uri uri, String snippet) {
+      this.uri = uri;
       this.snippet = snippet;
     }
 
-    public String getLink() {
-      return link;
+    public Uri getUri() {
+      return uri;
     }
 
     public String getSnippet() {
@@ -41,12 +43,12 @@ public class Cats {
       }
 
       Cat cat = (Cat) o;
-      return link.equals(cat.link) && snippet.equals(cat.snippet);
+      return uri.equals(cat.uri) && snippet.equals(cat.snippet);
 
     }
 
     @Override public int hashCode() {
-      int result = link.hashCode();
+      int result = uri.hashCode();
       result = 31 * result + snippet.hashCode();
       return result;
     }
