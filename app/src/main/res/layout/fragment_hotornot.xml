@@ -40,10 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:rotation_degrees="16"
-        app:max_visible="4"
+        app:max_visible="2"
         app:min_adapter_stack="6"
-        android:background="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
         />
 
 </RelativeLayout>

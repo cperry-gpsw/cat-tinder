@@ -19,6 +19,7 @@ import com.cperry.cattinder.api.CatImageService;
 import com.cperry.cattinder.api.ServiceFactory;
 import com.cperry.cattinder.api.ServiceFactoryImpl;
 import com.cperry.cattinder.data.Cats.Cat;
+import com.lorentzos.flingswipe.FlingCardListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.squareup.picasso.Picasso;
 
@@ -93,44 +94,9 @@ public class HotOrNotFragment extends BaseFragment {
     // I think it's an implementation bug in the SwipeFlingAdapterView
     stackView.requestLayout();
 
-    findViewById(R.id.noButton).setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        stackView.getTopCardListener().selectLeft();
-      }
-    });
-
-    findViewById(R.id.yesButton).setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        stackView.getTopCardListener().selectRight();
-      }
-    });
-  }
-
-  public static void fling(View view, float toX, float toY, int stepCount) {
-    long downTime = SystemClock.uptimeMillis();
-    long eventTime = SystemClock.uptimeMillis();
-
-    float x = view.getX() + view.getWidth() / 2;
-    float y = view.getY() + view.getHeight() / 2;
-
-    float xStep = (toX - x) / stepCount;
-    float yStep = (toY - y) / stepCount;
-
-    MotionEvent event = MotionEvent.obtain(downTime, eventTime,
-      MotionEvent.ACTION_DOWN, x, y, 0);
-    view.dispatchTouchEvent(event);
-
-    for (int i = 0; i < stepCount; ++i) {
-      y += yStep;
-      x += xStep;
-      eventTime = SystemClock.uptimeMillis();
-      event = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_MOVE, x, y, 0);
-      view.dispatchTouchEvent(event);
-    }
-
-    eventTime = SystemClock.uptimeMillis();
-    event = MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_UP, x, y, 0);
-    view.dispatchTouchEvent(event);
+    // YES/NO Button clicks
+    findViewById(R.id.noButton).setOnClickListener(v -> stackView.getTopCardListener().selectLeft());
+    findViewById(R.id.yesButton).setOnClickListener(v -> stackView.getTopCardListener().selectRight());
   }
 
   static class KittyAdapter extends BaseAdapter {
@@ -164,7 +130,7 @@ public class HotOrNotFragment extends BaseFragment {
 
       Cat cat = getItem(position);
 
-      int size = (int) dipsToPixels(view.getContext(), 190f);
+      int size = (int) dipsToPixels(view.getContext(), 290f);
       picasso.load(cat.getUri())
         .resize(size, size)
         .centerCrop()
