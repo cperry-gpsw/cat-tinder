@@ -116,8 +116,8 @@
     <orderEntry type="library" exported="" scope="TEST" name="great-expectations-0.14" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="asm-3.3.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="testing-support-lib-0.1" level="project" />
-    <orderEntry type="library" exported="" name="timber-3.0.2" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="timber-3.0.2" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="asm-commons-3.3.1" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.1.1" level="project" />
@@ -135,7 +135,7 @@
     <orderEntry type="library" exported="" scope="TEST" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.1.1" level="project" />
     <orderEntry type="library" exported="" name="rxjava-core-0.20.7" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="junit-dep-4.10" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-integration-1.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="junit-dep-4.10" level="project" />
   </component>
 </module>
