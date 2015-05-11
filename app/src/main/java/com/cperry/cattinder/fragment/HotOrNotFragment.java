@@ -2,31 +2,28 @@ package com.cperry.cattinder.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cperry.cattinder.R;
+import com.cperry.cattinder.adapter.KittyPaginator;
+import com.cperry.cattinder.adapter.PaginationAdapter;
+import com.cperry.cattinder.adapter.Paginator;
 import com.cperry.cattinder.api.CatImageService;
 import com.cperry.cattinder.api.ServiceFactory;
 import com.cperry.cattinder.api.ServiceFactoryImpl;
 import com.cperry.cattinder.data.Cats.Cat;
-import com.lorentzos.flingswipe.FlingCardListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import rx.android.observables.AndroidObservable;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class HotOrNotFragment extends BaseFragment {
@@ -41,26 +38,20 @@ public class HotOrNotFragment extends BaseFragment {
 
     ServiceFactory serviceFactory = new ServiceFactoryImpl();
     CatImageService catImageService = serviceFactory.getCatImageService();
-
-    AndroidObservable.bindFragment(this, catImageService.getCats())
-      .subscribeOn(Schedulers.io())
-      .subscribe(cats -> {
-        showCats(cats.get());
-      });
+    showCats(new KittyPaginator(catImageService));
   }
 
-  private void showCats(List<Cat> cats) {
+  private void showCats(KittyPaginator paginator) {
     KittyAdapter adapter = new KittyAdapter(
       LayoutInflater.from(getActivity()),
       Picasso.with(getActivity()),
-      cats
+      paginator
     );
 
     SwipeFlingAdapterView stackView = findViewById(R.id.kittyStack);
     stackView.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
       @Override public void removeFirstObjectInAdapter() {
-        cats.remove(0);
-        adapter.notifyDataSetChanged();
+        adapter.removeItem(0);
       }
 
       @Override public void onLeftCardExit(Object o) {
@@ -71,7 +62,10 @@ public class HotOrNotFragment extends BaseFragment {
         Timber.d("onRightCardExit: " + o);
       }
 
-      @Override public void onAdapterAboutToEmpty(int i) { }
+      @Override public void onAdapterAboutToEmpty(int i) {
+        Timber.d("Adapter about to empty: " + i);
+        adapter.loadNextPage();
+      }
 
       @Override public void onScroll(float v) {
         // Negative values means left, positive means right
@@ -99,27 +93,14 @@ public class HotOrNotFragment extends BaseFragment {
     findViewById(R.id.yesButton).setOnClickListener(v -> stackView.getTopCardListener().selectRight());
   }
 
-  static class KittyAdapter extends BaseAdapter {
+  static class KittyAdapter extends PaginationAdapter<Cat> {
     private final LayoutInflater inflater;
     private final Picasso picasso;
-    private final List<Cat> cats;
 
-    KittyAdapter(LayoutInflater inflater, Picasso picasso, List<Cat> cats) {
+    KittyAdapter(LayoutInflater inflater, Picasso picasso, Paginator<List<Cat>> paginator) {
+      super(paginator);
       this.inflater = inflater;
       this.picasso = picasso;
-      this.cats = cats;
-    }
-
-    @Override public int getCount() {
-      return cats.size();
-    }
-
-    @Override public Cat getItem(int position) {
-      return cats.get(position);
-    }
-
-    @Override public long getItemId(int position) {
-      return position;
     }
 
     @Override public View getView(int position, View convertView, ViewGroup parent) {

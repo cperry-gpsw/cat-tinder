@@ -13,21 +13,21 @@ public class Cats {
   }
 
   public static class Cat {
-    private Uri uri;
-    private String snippet;
+    protected String link;
+    protected String snippet;
 
     public Cat() {
-      uri = Uri.EMPTY;
+      link = "";
       snippet = "";
     }
 
-    public Cat(Uri uri, String snippet) {
-      this.uri = uri;
+    public Cat(String link, String snippet) {
+      this.link = link;
       this.snippet = snippet;
     }
 
     public Uri getUri() {
-      return uri;
+      return Uri.parse(link);
     }
 
     public String getSnippet() {
@@ -43,12 +43,12 @@ public class Cats {
       }
 
       Cat cat = (Cat) o;
-      return uri.equals(cat.uri) && snippet.equals(cat.snippet);
+      return link.equals(cat.link) && snippet.equals(cat.snippet);
 
     }
 
     @Override public int hashCode() {
-      int result = uri.hashCode();
+      int result = link.hashCode();
       result = 31 * result + snippet.hashCode();
       return result;
     }

@@ -7,8 +7,6 @@ import com.cperry.cattinder.util.CollectionUtil;
 
 import java.util.List;
 
-import rx.Observable;
-
 public class ServiceFactoryImpl implements ServiceFactory {
 
   @Override public CatImageService getCatImageService() {
@@ -17,34 +15,40 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
   private static class MockCatImageService implements CatImageService {
 
-    @Override public Observable<Cats> getCats() {
-
-      List<Cats.Cat> list = CollectionUtil.newList(
-        new Cats.Cat(
-          getUri("grumpy_cat"),
-          "Grumpy Cat"
-        ),
-        new Cats.Cat(
-          getUri("pirate_cat"),
-          "Pirate Cat"
-        ),
-        new Cats.Cat(
-          getUri("ceiling_cat"),
-          "Ceiling Cat"
-        )
-      );
-
-      Cats cats = new Cats() {
-        @Override public List<Cat> get() {
-          return list;
-        }
-      };
-
-      return Observable.from(new Cats[]{ cats });
+    @Override public Cats getCats(int startIndex) {
+      return getCatsForIndex(startIndex);
     }
 
-    Uri getUri(String resource) {
-      return Uri.parse("android.resource://com.cperry.cattinder/drawable/" + resource);
+    private Cats getCatsForIndex(int startIndex) {
+      return new Cats() {
+        @Override public List<Cat> get() {
+          return CollectionUtil.newList(
+            new MockCat(
+              "grumpy_cat",
+              "Grumpy Cat " + startIndex
+            ),
+            new MockCat(
+              "pirate_cat",
+              "Pirate Cat " + (startIndex + 1)
+            ),
+            new MockCat(
+              "ceiling_cat",
+              "Ceiling Cat " + (startIndex + 2)
+            )
+          );
+        }
+      };
+    }
+
+    private static class MockCat extends Cats.Cat {
+
+      public MockCat(String link, String snippet) {
+        super(link, snippet);
+      }
+
+      @Override public Uri getUri() {
+        return Uri.parse("android.resource://com.cperry.cattinder/drawable/" + this.link);
+      }
     }
   }
 

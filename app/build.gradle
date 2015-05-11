@@ -44,6 +44,8 @@ android {
 
 dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    androidTestCompile 'com.github.xian:great-expectations:0.14'
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.easytesting:fest-assert:1.4'
 

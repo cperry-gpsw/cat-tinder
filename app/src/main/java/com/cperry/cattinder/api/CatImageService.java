@@ -3,7 +3,7 @@ package com.cperry.cattinder.api;
 import com.cperry.cattinder.data.Cats;
 
 import retrofit.http.GET;
-import rx.Observable;
+import retrofit.http.Query;
 
 /**
  * Uses Google Custom Search API to search
@@ -19,5 +19,5 @@ public interface CatImageService {
 
   @GET("/customsearch/v1?key=AIzaSyAZmvW6DecHAvtLCiqYQzmhKCNnsOYxtgo&cx=005351716643766109453" +
     ":uusxxukdams&searchType=image&q=cat")
-  Observable<Cats> getCats();
+  Cats getCats(@Query("start") int startIndex);
 }
