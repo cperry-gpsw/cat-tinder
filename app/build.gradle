@@ -4,14 +4,12 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     defaultConfig {
-        applicationId "com.cperry.cattinder"
+        applicationId 'com.example.cattinder'
         minSdkVersion 21
         targetSdkVersion 22
         versionCode 1
@@ -19,41 +17,45 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
-    productFlavors {
-        mock {
-
-        }
-
-        real {
-
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     packagingOptions {
         exclude 'LICENSE.txt'
+    }
+    productFlavors {
     }
 }
 
 dependencies {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Instrumentation Test Dependencies (these need a device to run)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'com.github.xian:great-expectations:0.14'
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Unit Test Dependencies (these don't need a device to run)
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     testCompile 'junit:junit:4.12'
-    testCompile 'org.easytesting:fest-assert:1.4'
-
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:22.1.1'
-    compile 'com.netflix.rxjava:rxjava-android:0.20.7'
+    testCompile 'com.squareup.assertj:assertj-android:1.1.1'
+    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.mockito:mockito-core:2.0.31-beta'
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Application Dependencies
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Android Support Libs
+    compile 'com.android.support:support-v4:22.2.1'
+    // Square Libs
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    // Butterknife
+    compile 'com.jakewharton:butterknife:7.0.1'
+    // Swipe Cards UI Lib
     compile 'com.lorentzos.swipecards:library:1.0.8@aar'
-    compile 'com.jakewharton.timber:timber:3.0.2'
+    // RX - JAVA
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
 }
